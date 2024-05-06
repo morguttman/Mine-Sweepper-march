@@ -1,0 +1,65 @@
+body {
+  background-color: black;
+  color: white;
+  text-align: center;
+  height: 600px;
+}
+
+.title {
+  height: 200px;
+}
+
+.title-name {
+  border: 5px solid;
+  border-radius: 5px;
+  color: pink;
+  font-size: 50px;
+}
+.btns {
+  height: 30px;
+}
+.btn {
+  border: 3px solid;
+  border-radius: 5px;
+  height: 30px;
+}
+.Beginner-btn {
+  background-color: bisque;
+}
+
+.Medium-btn {
+  background-color: pink;
+}
+
+.Advanced-btn {
+  background-color: hotpink;
+}
+
+.icons {
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: x-large;
+}
+
+.lives {
+  margin-left: 100px;
+}
+
+.board-container {
+  margin: auto;
+  height: 20vw;
+  width: 20vw;
+}
+table {
+  table-layout: fixed;
+  height: 50%;
+  width: 50%;
+}
+
+.cell {
+  border: 3px solid;
+  background-color: grey;
+  height: 8px;
+  width: 8px;
+}

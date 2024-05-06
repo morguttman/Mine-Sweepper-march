@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="mineSwepper.css" />
+  </head>
+  <body onload="init()">
+    <div class="title">
+      <h2 class="title-name">Mine Sweeper</h2>
+      <div class="icons"><span class="lives">❤️3</span></div>
+
+      <div class="btns">
+        <button class="btn Beginner-btn" onclick="levelClicked(this)">
+          Beginner
+        </button>
+        <button class="btn Medium-btn" onclick="levelClicked(this)">
+          Medium
+        </button>
+        <button class="btn Advanced-btn" onclick="levelClicked(this)">
+          Advanced
+        </button>
+      </div>
+
+      <div class="icons">
+        <span class="smiley">🙂</span>
+      </div>
+
+      <table class="board-container">
+        <tbody class="board"></tbody>
+      </table>
+    </div>
+    <script src="mineSwepper.js"></script>
+    <script src="mine.js"></script>
+    <script src="utils.js"></script>
+  </body>
+</html>
