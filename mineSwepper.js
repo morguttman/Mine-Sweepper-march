@@ -5,6 +5,7 @@ const lives = "❤️";
 gLevel = {
   SIZE: 4,
   MINES: 2,
+  LIVES: 1,
 };
 
 class gCell {
@@ -19,15 +20,19 @@ class gCell {
 
 var gClickedCell;
 var gMinesClickedCount = 0;
-var gLife = 3;
+var gLifeLeft;
 
 var gBoard;
 function init() {
+  gMinesClickedCount = 0;
   gBoard = buildBoard(gLevel.SIZE);
   console.log("***size***", gLevel.SIZE);
   renderBoard(gBoard);
   createMines(gBoard);
   countMinesAroundCell(gBoard);
+  setLives(gLevel);
+  resetSmiley();
+  gLifeLeft = gLevel.LIVES;
 }
 
 //countMinesAroundCell(gBoard);
@@ -86,44 +91,11 @@ function countMinesAroundCell(gBoard) {
         }
       }
       currCell.minesAroundCell = minesFoundCount;
-      // console.log(minesFoundCount, "mines around", currCell.location);
-      /*   var elCell = document.querySelector(
-        `.cell-${currCell.location.i}-${currCell.location.j}`
-      );
-      elCell.innerText = minesFoundCount; */
-      //console.log("minesCount", minesFoundCount);
+
       minesFoundCount = 0;
     }
   }
 }
-//  console.log(+location[0] - 1, +location[0] + 1);
-//cell.style.backgroundColor = "red";
-//console.log(i, j);
-//console.log(gBoard[`${i}`][`${j}`]);
-// if (gBoard[i][j].isMine) minesFoundCount++;
-
-/* var minesFoundCount = 0;
-  console.log(location);
-  for (var i = +location[0] - 1; i < +location[0] + 1; i++) {
-    if (i < 0 || i > gBoard.length - 1) continue;
-    for (var j = location[1] - 1; j < location[1] + 1; j++) {
-      if (j < 0 || j > gBoard.length - 1) continue;
-      //  console.log(+location[0] - 1, +location[0] + 1);
-      //cell.style.backgroundColor = "red";
-      //console.log(i, j);
-      console.log(gBoard[`${i}`][`${j}`]);
-      if (gBoard[i][j].isMine) minesFoundCount++;
-    }
-    console.log(minesFoundCount);
-    gBoard[location[0]][location[1]] = minesFoundCount;
-    const className = `cell-${location[0]}-${location[1]}`;
-    console.log(className);
-    document.querySelector(`cell-${location[0]}-${location[1]}`).innerText =
-      minesFoundCount;
-    /*  const elCell = document.querySelector(`cell-${location[0]}-${location[1]}`);
-    console.log(elCell);
-    elCell.innerHTML = minesFoundCount; 
-  /*}*/
 
 function onCellClicked(cell) {
   console.log(gMinesClickedCount);
@@ -143,9 +115,10 @@ function onCellClicked(cell) {
     elCell.innerText = MINE;
     elCell.style.backgroundColor = "red";
     gMinesClickedCount++;
+
     subLives();
   }
-  if (gMinesClickedCount === 4) {
+  if (gMinesClickedCount === gLevel.LIVES + 1) {
     renderAllMines(gBoard);
   }
 }
@@ -184,23 +157,36 @@ function levelClicked(btn) {
   if (btn.classList.contains("Beginner-btn")) {
     gLevel.SIZE = 4;
     gLevel.MINES = 2;
+    gLevel.LIVES = 1;
   }
   if (btn.classList.contains("Medium-btn")) {
     console.log("glLevel 8");
 
     gLevel.SIZE = 8;
     gLevel.MINES = 14;
+    gLevel.LIVES = 3;
   }
 
   if (btn.classList.contains("Advanced-btn")) {
     gLevel.SIZE = 12;
     gLevel.MINES = 32;
+    gLevel.LIVES = 3;
   }
   init();
 }
 
-function subLives() {
-  gLife--;
+function setLives(level) {
+  document.querySelector(".life-number").innerText = `${gLevel.LIVES}`;
+}
 
-  if (gLife === 0) return;
+function subLives() {
+  if (gLifeLeft === 0) return;
+  gLifeLeft--;
+  console.log("LifeLeft", gLifeLeft);
+  console.log(gLevel.LIVES);
+  document.querySelector(".life-number").innerText = gLifeLeft;
+}
+
+function resetSmiley() {
+  document.querySelector(".smiley").innerText = smiley;
 }
