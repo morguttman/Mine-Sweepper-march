@@ -10,6 +10,7 @@
     <div class="title">
       <h2 class="title-name">Mine Sweeper</h2>
       <div class="icons">
+        <span class="flags">🚩<span class="flags-number"></span></span>
         <span class="lives">❤️<span class="life-number"></span></span>
       </div>
 
@@ -26,13 +27,16 @@
       </div>
 
       <div class="icons">
-        <span class="smiley">🙂</span>
+        <span class="smiley" onclick="init()">🙂</span>
       </div>
 
-      <table class="board-container">
+      <table class="board-container" oncontextmenu="return false;">
         <tbody class="board"></tbody>
       </table>
     </div>
+
+    <div class="modal"></div>
+
     <script src="mineSwepper.js"></script>
     <script src="mine.js"></script>
     <script src="utils.js"></script>

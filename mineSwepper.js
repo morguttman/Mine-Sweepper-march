@@ -1,6 +1,7 @@
 const smiley = "🙂";
 const sadSmiley = "☹️";
 const lives = "❤️";
+const flag = "🚩";
 
 gLevel = {
   SIZE: 4,
@@ -21,8 +22,10 @@ class gCell {
 var gClickedCell;
 var gMinesClickedCount = 0;
 var gLifeLeft;
-
+var gCellLocation = onCellClicked();
+var gFlags;
 var gBoard;
+
 function init() {
   gMinesClickedCount = 0;
   gBoard = buildBoard(gLevel.SIZE);
@@ -33,6 +36,7 @@ function init() {
   setLives(gLevel);
   resetSmiley();
   gLifeLeft = gLevel.LIVES;
+  gFlags = gLevel.MINES;
 }
 
 //countMinesAroundCell(gBoard);
@@ -62,7 +66,7 @@ function renderBoard(board) {
     for (var j = 0; j < board[0].length; j++) {
       const cell = board[i][j];
       const className = `cell cell-${i}-${j}`;
-      strHtml += `<td class="${className}" onclick="onCellClicked(this)" "getLocation(this)" </td>`;
+      strHtml += `<td class="${className}" onclick="onCellClicked(this)" "getLocation(this)" oncontextmenu="markCell(this)"  </td>`;
     }
     strHtml += "</tr>";
   }
@@ -98,8 +102,9 @@ function countMinesAroundCell(gBoard) {
 }
 
 function onCellClicked(cell) {
-  console.log(gMinesClickedCount);
+  console.log("mines clicked", gMinesClickedCount);
   var cellLocation = getLocation(cell);
+
   //console.log(cellLocation);
   var i = +cellLocation[0];
   var j = +cellLocation[1];
@@ -107,10 +112,14 @@ function onCellClicked(cell) {
   var elCell = document.querySelector(
     `.cell-${cellLocation[0]}-${cellLocation[1]}`
   );
+  if (gBoard[i][j].isMarked) return;
   // console.log(elCell);
+  gBoard[i][j].isShown = true;
+  console.log(gBoard);
   elCell.innerText = gBoard[i][j].minesAroundCell;
   if (gBoard[i][j].minesAroundCell === 0) elCell.innerText = " ";
   cell.style.backgroundColor = "darkgray";
+
   if (gBoard[i][j].isMine) {
     elCell.innerText = MINE;
     elCell.style.backgroundColor = "red";
@@ -120,7 +129,9 @@ function onCellClicked(cell) {
   }
   if (gMinesClickedCount === gLevel.LIVES + 1) {
     renderAllMines(gBoard);
+    //modal//
   }
+  clickNeigCells(cellLocation);
 }
 
 // var numOfMines = cell.location;
@@ -137,6 +148,7 @@ function onCellClicked(cell) {
 // console.log(cell);
 
 function getLocation(cell) {
+  console.log(cell);
   var list = cell.classList.value;
   console.log(list);
   var location = list.slice(10);
@@ -177,6 +189,7 @@ function levelClicked(btn) {
 
 function setLives(level) {
   document.querySelector(".life-number").innerText = `${gLevel.LIVES}`;
+  document.querySelector(".flags-number").innerText = `${gLevel.MINES}`;
 }
 
 function subLives() {
@@ -190,3 +203,84 @@ function subLives() {
 function resetSmiley() {
   document.querySelector(".smiley").innerText = smiley;
 }
+
+function clickNeigCells(cellLocation) {
+  console.log("cell clicked", cellLocation);
+  var r = +cellLocation[0];
+  var c = +cellLocation[1];
+  console.log(r, c);
+  if (gBoard[r][c].isMine) return;
+  if (gBoard[r][c].minesAroundCell > 0) return;
+
+  for (var i = r - 1; i <= r + 1; i++) {
+    console.log("i is", i);
+    if (i < 0 || i > gBoard.length - 1) continue;
+    for (var j = c - 1; j <= c + 1; j++) {
+      if (j < 0 || j > gBoard.length - 1) continue;
+
+      var neigCell = gBoard[i][j];
+      if (neigCell.isShown) continue;
+      if (neigCell.isMine) return;
+
+      const cell = document.querySelector(
+        `.cell-${neigCell.location.i}-${neigCell.location.j}`
+      );
+      console.log("neigbor cell", cell, neigCell.location, neigCell);
+      onCellClicked(cell);
+    }
+
+    //onCellClicked(gBoard[i+1][j])
+  }
+}
+
+function markCell(cell) {
+  console.log("marked cell");
+  var cellLocation = getLocation(cell);
+  console.log(cellLocation);
+  var i = +cellLocation[0];
+  var j = +cellLocation[1];
+
+  if (gBoard[i][j].isMarked) unMarkCell(cell);
+  else {
+    var elCell = document.querySelector(
+      `.cell-${cellLocation[0]}-${cellLocation[1]}`
+    );
+
+    if (gBoard[i][j].isShown) return;
+
+    gBoard[i][j].isMarked = true;
+    console.log("cell is marked", gBoard[i][j]);
+    if (gFlags === 0) {
+      gBoard[i][j].isMarked = false;
+      return;
+    }
+
+    gFlags--;
+
+    document.querySelector(".flags-number").innerText = gFlags;
+    elCell.innerText = flag;
+
+    console.log(gFlags);
+  }
+}
+
+function unMarkCell(cell) {
+  console.log("unmark cell");
+  var cellLocation = getLocation(cell);
+
+  console.log(cellLocation);
+  var i = +cellLocation[0];
+  var j = +cellLocation[1];
+
+  var elCell = document.querySelector(
+    `.cell-${cellLocation[0]}-${cellLocation[1]}`
+  );
+  if (gBoard[i][j].isMarked) {
+    gBoard[i][j].isMarked = false;
+    gFlags++;
+    document.querySelector(".flags-number").innerText = gFlags;
+    elCell.innerText = "";
+  }
+}
+
+function gameOverModal() {}

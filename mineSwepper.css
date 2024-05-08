@@ -1,4 +1,5 @@
 body {
+  position: relative;
   background-color: black;
   color: white;
   text-align: center;
@@ -62,4 +63,15 @@ table {
   background-color: grey;
   height: 8px;
   width: 8px;
+}
+
+.modal {
+  margin: 0px 463px;
+
+  height: 50px;
+  width: 235px;
+  background-color: beige;
+
+  position: absolute;
+  bottom: 0;
 }
