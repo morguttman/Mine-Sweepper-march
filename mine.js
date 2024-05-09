@@ -19,10 +19,10 @@ function createMine(board) {
   };
 
   board[mine.location.i][mine.location.j].isMine = true;
-  console.log(mine, board[mine.location.i][mine.location.j].isMine);
-  /* gMines.push(mine);
-  board[mine.location.i][mine.location.j] = MINE;
-  console.log(mine.location); */
+  //console.log( board[mine.location.i][mine.location.j].isMine);
+  //gMines.push(mine);
+  // board[mine.location.i][mine.location.j] = MINE;
+  console.log(mine.location);
   //renderCell(mine.location, MINE);
 }
 

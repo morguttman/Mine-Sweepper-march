@@ -19,14 +19,23 @@ class gCell {
   }
 }
 
+const gGame = {
+  isOn: false,
+  shownCount: 0,
+  markedCount: 0,
+  secsPassed: 0,
+};
+var isVictory;
 var gClickedCell;
 var gMinesClickedCount = 0;
 var gLifeLeft;
 var gCellLocation = onCellClicked();
 var gFlags;
 var gBoard;
+var gMinesMarked;
 
 function init() {
+  gMinesMarked = 0;
   gMinesClickedCount = 0;
   gBoard = buildBoard(gLevel.SIZE);
   console.log("***size***", gLevel.SIZE);
@@ -37,6 +46,7 @@ function init() {
   resetSmiley();
   gLifeLeft = gLevel.LIVES;
   gFlags = gLevel.MINES;
+  document.querySelector(".modal").classList.add("hidden");
 }
 
 //countMinesAroundCell(gBoard);
@@ -112,6 +122,7 @@ function onCellClicked(cell) {
   var elCell = document.querySelector(
     `.cell-${cellLocation[0]}-${cellLocation[1]}`
   );
+
   if (gBoard[i][j].isMarked) return;
   // console.log(elCell);
   gBoard[i][j].isShown = true;
@@ -129,7 +140,8 @@ function onCellClicked(cell) {
   }
   if (gMinesClickedCount === gLevel.LIVES + 1) {
     renderAllMines(gBoard);
-    //modal//
+    isVictory = false;
+    gameOverModal();
   }
   clickNeigCells(cellLocation);
 }
@@ -195,8 +207,8 @@ function setLives(level) {
 function subLives() {
   if (gLifeLeft === 0) return;
   gLifeLeft--;
-  console.log("LifeLeft", gLifeLeft);
-  console.log(gLevel.LIVES);
+  // console.log("LifeLeft", gLifeLeft);
+  // console.log(gLevel.LIVES);
   document.querySelector(".life-number").innerText = gLifeLeft;
 }
 
@@ -205,15 +217,15 @@ function resetSmiley() {
 }
 
 function clickNeigCells(cellLocation) {
-  console.log("cell clicked", cellLocation);
+  // console.log("cell clicked", cellLocation);
   var r = +cellLocation[0];
   var c = +cellLocation[1];
-  console.log(r, c);
+  // console.log(r, c);
   if (gBoard[r][c].isMine) return;
   if (gBoard[r][c].minesAroundCell > 0) return;
 
   for (var i = r - 1; i <= r + 1; i++) {
-    console.log("i is", i);
+    // console.log("i is", i);
     if (i < 0 || i > gBoard.length - 1) continue;
     for (var j = c - 1; j <= c + 1; j++) {
       if (j < 0 || j > gBoard.length - 1) continue;
@@ -234,33 +246,37 @@ function clickNeigCells(cellLocation) {
 }
 
 function markCell(cell) {
-  console.log("marked cell");
+  // console.log("marked cell");
   var cellLocation = getLocation(cell);
   console.log(cellLocation);
   var i = +cellLocation[0];
   var j = +cellLocation[1];
+  var elCell = document.querySelector(
+    `.cell-${cellLocation[0]}-${cellLocation[1]}`
+  );
+  checkIfWin();
 
   if (gBoard[i][j].isMarked) unMarkCell(cell);
   else {
-    var elCell = document.querySelector(
-      `.cell-${cellLocation[0]}-${cellLocation[1]}`
-    );
-
     if (gBoard[i][j].isShown) return;
 
     gBoard[i][j].isMarked = true;
-    console.log("cell is marked", gBoard[i][j]);
+    //console.log("cell is marked", gBoard[i][j]);
     if (gFlags === 0) {
       gBoard[i][j].isMarked = false;
       return;
     }
 
-    gFlags--;
+    if (gBoard[i][j].isMine && gBoard[i][j].isMarked) {
+      gMinesMarked++;
+      console.log("mines found", gMinesMarked);
+    }
 
+    gFlags--;
     document.querySelector(".flags-number").innerText = gFlags;
     elCell.innerText = flag;
 
-    console.log(gFlags);
+    //console.log(gFlags);
   }
 }
 
@@ -283,4 +299,27 @@ function unMarkCell(cell) {
   }
 }
 
-function gameOverModal() {}
+function gameOverModal() {
+  document.querySelector(".modal").classList.remove("hidden");
+
+  if (isVictory) {
+    document.querySelector(".modal").innerHTML = `<span> 🎊YOU WON🎊</span> <br>
+  <button onclick = "init()">Play again</button>`;
+  } else if (!isVictory) {
+    document.querySelector(".modal").innerHTML = `<span>GAME OVER</span> <br>
+  <button onclick = "init()">Try again</button>`;
+  }
+}
+function checkIfWin() {
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard.length; j++) {
+      var cell = gBoard[i][j];
+      console.log(cell, gBoard[i][j]);
+      if ((cell.isShown = false)) return;
+      if (cell.isShown && gMinesMarked === gFlags) {
+        isVictory = true;
+        gameOverModal();
+      }
+    }
+  }
+}
