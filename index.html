@@ -11,6 +11,7 @@
       <h2 class="title-name">Mine Sweeper</h2>
       <div class="icons">
         <span class="flags">🚩<span class="flags-number"></span></span>
+        <span class="time"><span class="timer"></span></span>
         <span class="lives">❤️<span class="life-number"></span></span>
       </div>
 
@@ -27,7 +28,7 @@
       </div>
 
       <div class="icons">
-        <span class="smiley" onclick="init()">🙂</span>
+        <span class="smiley" onclick="init(); stopTimer()">🙂</span>
       </div>
 
       <table class="board-container" oncontextmenu="return false;">

@@ -1,29 +1,40 @@
 const MINE = "💣";
-
+var gShowMineInterval;
 var gMines = [];
 
 function createMines(board) {
   gMines = [];
+  // var gMine = createMine();
+
   for (i = 0; i < gLevel.MINES; i++) {
-    console.log(gLevel.MINES);
     createMine(board);
+
+    // console.log(gLevel.MINES);
   }
 }
 
 function createMine(board) {
   const mine = {
     location: {
-      i: getRandomIntInclusive(0, gLevel.SIZE - 1),
-      j: getRandomIntInclusive(0, gLevel.SIZE - 1),
+      i: getRandomInt(0, gLevel.SIZE - 1),
+      j: getRandomInt(0, gLevel.SIZE - 1),
     },
   };
 
   board[mine.location.i][mine.location.j].isMine = true;
-  //console.log( board[mine.location.i][mine.location.j].isMine);
-  //gMines.push(mine);
+  console.log(mine);
+  console.log(mine.location.i, mine.location.j);
+
+  //console.log(gMines[i]);
+
+  // if (gMines)
+  // if (gMines.includes(mine)) console.log("in array");
+
   // board[mine.location.i][mine.location.j] = MINE;
-  console.log(mine.location);
+
   //renderCell(mine.location, MINE);
+
+  return mine;
 }
 
 function renderAllMines(gBoard) {
@@ -39,3 +50,21 @@ function renderAllMines(gBoard) {
     }
   }
 }
+
+function clearMine(cell) {
+  cell.innerText = "";
+  cell.style.backgroundColor = "gray";
+}
+
+function showMine(cell) {
+  cell.innerText = MINE;
+  cell.style.backgroundColor = "red";
+  setTimeout(() => clearMine(cell), 3000);
+}
+
+/* function showMineInterval() {
+  gShowMineInterval = setInterval(function () {
+    showMine();
+  }, 3000);
+  clearInterval(gShowMineInterval);
+} */

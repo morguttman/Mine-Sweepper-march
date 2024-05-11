@@ -79,6 +79,10 @@ table {
   font-size: x-large;
 }
 
+.time {
+  margin-left: 100px;
+}
+
 .hidden {
   display: none;
 }
