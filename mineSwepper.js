@@ -132,8 +132,10 @@ function onCellClicked(cell) {
   );
 
   if (gBoard[i][j].isMarked) return;
+
   gBoard[i][j].isShown = true;
   gGame.shownCount++;
+  console.log(gGame.shownCount);
   //console.log(gBoard);
   elCell.innerText = gBoard[i][j].minesAroundCell;
 

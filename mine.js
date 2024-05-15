@@ -1,40 +1,78 @@
 const MINE = "💣";
 var gShowMineInterval;
-var gMines = [];
+var gMines;
+var gMine;
 
 function createMines(board) {
   gMines = [];
-  // var gMine = createMine();
 
-  for (i = 0; i < gLevel.MINES; i++) {
-    createMine(board);
+  for (var i = 0; i < gLevel.MINES; i++) {
+    gMine = createMine(gBoard);
 
-    // console.log(gLevel.MINES);
+    if (gMines.indexOf(`${gMine.location.i}${gMine.location.j}`) != -1) {
+      console.log(gMines.indexOf`${gMine.location.i}${gMine.location.j}`);
+      //gMines.push([gMine.location.i, gMine.location.j]);
+      console.log(gMine, "is already in array");
+      console.log(gMines);
+    } else {
+      gMines.push(`${gMine.location.i}${gMine.location.j}`);
+      console.log(gMines.indexOf`${gMine.location.i}${gMine.location.j}`);
+    }
+    console.log(gMines);
+
+    /* for (i = 0; i < gMines.length; i++) {
+      if (gMines.length > 0) {
+        if (
+          gMine.location.i == gMines[i][0] &&
+          gMine.location.j == gMines[i][1]
+        ) {
+          console.log(gMine, "is already in array");
+          console.log(gMines);
+        } else {
+          gMines.push([gMine.location.i, gMine.location.j]);
+        }
+      }
+    } */
+    //if (gMines.length == 0) continue;
+    /* console.log(gMines);
+    if (gMines.length > 0) {
+      if (
+        gMine.location.i == gMines[i][0] &&
+        gMine.location.j == gMines[i][1]
+      ) {
+        console.log(
+          "already in array",
+          "gmine",
+          gMine.location.i,
+          gMine.location.j,
+          gMines
+        );
+      } else {
+        gMines.push(gMine);
+      }
+    } */
   }
 }
 
 function createMine(board) {
-  const mine = {
+  gMine = {
     location: {
       i: getRandomInt(0, gLevel.SIZE - 1),
       j: getRandomInt(0, gLevel.SIZE - 1),
     },
   };
-
-  board[mine.location.i][mine.location.j].isMine = true;
-  console.log(mine);
-  console.log(mine.location.i, mine.location.j);
-
-  //console.log(gMines[i]);
-
-  // if (gMines)
-  // if (gMines.includes(mine)) console.log("in array");
-
-  // board[mine.location.i][mine.location.j] = MINE;
-
-  //renderCell(mine.location, MINE);
-
-  return mine;
+  console.log(gMine);
+  /*   for (i = 0; i < gMines.length; i++) {
+    // if (gMines.length > 0) {
+    if (gMine.location.i == gMines[i][0] && gMine.location.j == gMines[i][1]) {
+      console.log(gMine, "is already in array");
+      console.log(gMines);
+    } else {
+      gMines.push([gMine.location.i, gMine.location.j]);
+    }
+  } */
+  gBoard[gMine.location.i][gMine.location.j].isMine = true;
+  return gMine;
 }
 
 function renderAllMines(gBoard) {

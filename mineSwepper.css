@@ -15,6 +15,7 @@ body {
   border-radius: 5px;
   color: pink;
   font-size: 50px;
+  margin-bottom: 30px;
 }
 .btns {
   height: 30px;
@@ -38,7 +39,7 @@ body {
 
 .icons {
   margin: auto;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-bottom: 15px;
   font-size: x-large;
 }
@@ -61,8 +62,8 @@ table {
 .cell {
   border: 3px solid;
   background-color: grey;
-  height: 8px;
-  width: 8px;
+  height: 20px;
+  width: 20px;
 }
 
 .modal {
